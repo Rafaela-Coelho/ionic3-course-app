@@ -7,50 +7,60 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>Feed</ion-title>
+    <ion-title>{{ objeto_feed.titulo }}</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
   <div>
   </div>
-  <ion-card>
+  <ion-card *ngFor="let filme of lista_filmes">
 
     <ion-item>
       <ion-avatar item-start>
         <img src="assets/imgs/avatar.png">
       </ion-avatar>
-      <h2 class="feed_title">{{ nome_usuario }}</h2>
-      <p class="feed_date">November 5, 1955</p>
+      <h2 class="feed_title">{{ filme.original_title }}</h2>
+      <p class="feed_date">{{ filme.release_date}}</p>
     </ion-item>
 
-    <img src="assets/imgs/feed.png">
+    <img [src]="'https://image.tmdb.org/t/p/w300/' + filme.backdrop_path">
 
     <ion-card-content>
-      <p>Estou criando um App demais!</p>
+      <p>{{filme.descricao}}</p>
     </ion-card-content>
+
+
 
     <ion-row>
       <ion-col>
         <button ion-button icon-start clear small>
           <ion-icon name="thumbs-up"></ion-icon>
-          <div>13 Likes</div>
+          <div>{{objeto_feed.overview}}</div>
         </button>
       </ion-col>
       <ion-col>
         <button ion-button icon-start clear small>
           <ion-icon name="text"></ion-icon>
-          <div>4 Comments</div>
+          <div>{{objeto_feed.qtd_comments}}</div>
         </button>
       </ion-col>
       <ion-col center text-center>
         <ion-note>
-          11h ago
+          {{objeto_feed.time_comments}}
         </ion-note>
       </ion-col>
+      <button ion-button block (click)="goToDescriptionPage(filme)">Detalhes</button>
     </ion-row>
-
   </ion-card>
+
+  <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
 </ion-content>
